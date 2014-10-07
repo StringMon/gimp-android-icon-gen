@@ -3,8 +3,9 @@
 from gimpfu import *
 import io
 import os
+from collections import defaultdict
 
-def python_android_icon_generator(img, layer, wrap, outDirectory, outname, websz, xhdpisz, hdpisz, mdpisz):
+def python_android_icon_generator(img, layer, folder_structure, wrap, outDirectory, outname, websz, xhdpisz, hdpisz, mdpisz):
 	if wrap: 
 		filename = os.path.basename(img.filename).split(".")[0] #gets file name for use as directory
 		outDirectory = os.path.join(outDirectory, filename)	
@@ -25,16 +26,19 @@ def python_android_icon_generator(img, layer, wrap, outDirectory, outname, websz
 				"hdpi": hdpisz,
 				"mdpi": mdpisz
 				}
-
-	outpaths = {#map sizes to output folder structures
-				"web":   outDirectory,
-				"xhdpi": os.path.join(outDirectory, "res", "drawable-xhdpi"),
-				"hdpi":  os.path.join(outDirectory, "res", "drawable-hdpi"),
-				"mdpi":  os.path.join(outDirectory, "res", "drawable-mdpi")
-				}
+	if folder_structure:
+		outpaths = {#map sizes to output folder structures
+					"web":   outDirectory,
+					"xhdpi": os.path.join(outDirectory, "res", "drawable-xhdpi"),
+					"hdpi":  os.path.join(outDirectory, "res", "drawable-hdpi"),
+					"mdpi":  os.path.join(outDirectory, "res", "drawable-mdpi")
+					}
+	else:
+		outpaths = defaultdict(lambda: outDirectory)
 	
 	for size, res in sizes.items():
-		fileNameAugment = "-web" if size == "web" else ""
+		fileNameAugment = "-web" if size == "web" else ("" if folder_structure else "-{}".format(size))
+
 		saveScaledImage(img, outpaths[size], outname + fileNameAugment, res)
 	return;
 # end
@@ -80,6 +84,7 @@ register(
         "<Image>/Android/Generate Icon Set...",
         "RGB*, GRAY*",
         [
+        (PF_TOGGLE, "folder_structure", "Use Android resource directory structure?", True),
 		(PF_TOGGLE, "wrap", "Wrap output in a folder?", True),
 		(PF_DIRNAME, "filepath", "Output Filepath", defaultPath),
         (PF_STRING, "filename", "Android Resource Name", "ic_launcher"),
