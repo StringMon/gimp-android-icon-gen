@@ -4,4 +4,4 @@ This is a Python-Fu Gimp plugin designed to make it easy to generate output icon
 
 To install, just put `androidResourceGen.py` in your `.gimp-X.X/plug-ins` folder and restart Gimp. Make sure you have Gimp Python support enabled.
 
-On Windows, it's `5USERPROFILE%\AppData\Roaming\GIMP\X.X\plug-ins`.
+On Windows, it's `%USERPROFILE%\AppData\Roaming\GIMP\X.X\plug-ins`.
