@@ -5,7 +5,7 @@ import io
 import os
 from collections import defaultdict
 
-def python_android_icon_generator(img, layer, folder_structure, wrap, outDirectory, outname, websz, xhdpisz, hdpisz, mdpisz):
+def python_android_icon_generator(img, layer, folder_structure, wrap, outDirectory, outname, websz, xxxhdpisz, xxhdpisz, xhdpisz, hdpisz, mdpisz):
 	if wrap: 
 		filename = os.path.basename(img.filename).split(".")[0] #gets file name for use as directory
 		outDirectory = os.path.join(outDirectory, filename)	
@@ -22,6 +22,8 @@ def python_android_icon_generator(img, layer, folder_structure, wrap, outDirecto
 	
 	sizes = { #map sizes to icon dimensions (icons are square, we only
 				"web": websz,
+				"xxxhdpi": xxxhdpisz,
+				"xxhdpi": xxhdpisz,
 				"xhdpi": xhdpisz,
 				"hdpi": hdpisz,
 				"mdpi": mdpisz
@@ -29,6 +31,8 @@ def python_android_icon_generator(img, layer, folder_structure, wrap, outDirecto
 	if folder_structure:
 		outpaths = {#map sizes to output folder structures
 					"web":   outDirectory,
+					"xxxhdpi": os.path.join(outDirectory, "res", "drawable-xxxhdpi"),
+					"xxhdpi": os.path.join(outDirectory, "res", "drawable-xxhdpi"),
 					"xhdpi": os.path.join(outDirectory, "res", "drawable-xhdpi"),
 					"hdpi":  os.path.join(outDirectory, "res", "drawable-hdpi"),
 					"mdpi":  os.path.join(outDirectory, "res", "drawable-mdpi")
@@ -89,6 +93,8 @@ register(
 		(PF_DIRNAME, "filepath", "Output Filepath", defaultPath),
         (PF_STRING, "filename", "Android Resource Name", "ic_launcher"),
         (PF_INT16, "websz", "Dimension - web:", 512),
+        (PF_INT16, "xxxhdpisz", "Dimension - xhdpi:", 192),
+        (PF_INT16, "xxhdpisz", "Dimension - xhdpi:", 144),
         (PF_INT16, "xhdpisz", "Dimension - xhdpi:", 96),
         (PF_INT16, "hdpisz", "Dimension - hdpi:", 72),
         (PF_INT16, "mdpisz", "Dimension - mdpi:", 48),
